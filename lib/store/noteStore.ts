@@ -29,7 +29,7 @@ export const useTaskStore = create<NoteStore>()(
 		}),
 		{
 			name: "task-draft",
-			partialize: (state) => ({ draft: state.draft }), // зберігаємо тільки draft
+			partialize: (state) => ({ draft: state.draft }),
 		}
 	)
 )

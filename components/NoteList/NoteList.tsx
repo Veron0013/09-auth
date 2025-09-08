@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { ConfirmDimentions, Note, NoteId } from "../../types/note"
 import css from "./NoteList.module.css"
-import { deleteNote } from "@/lib/api"
+import { deleteNote } from "@/lib/api/api"
 import { useState } from "react"
 import toastMessage, { MyToastType } from "@/lib/messageService"
 import ConfirmMessage from "../ConfirnMessage/ConfirnMessage"

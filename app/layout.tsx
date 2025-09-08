@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header"
 import Footer from "@/components/Footer/Footer"
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider"
 import { Toaster } from "react-hot-toast"
+import AuthProvider from "@/components/AuthProvider/AuthProvider"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: `Notehub app`,
 		description: "Simple app to manage your notes",
-		url: `https://08-zustand-eight-rouge.vercel.app/`,
+		url: `https://09-auth-eight-rouge.vercel.app/`,
 		siteName: "NoteHub",
 		images: [
 			{
@@ -58,12 +59,14 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}>
 				<TanStackProvider>
 					<div className="layout">
-						<Header />
-						<main className="main">
-							{children}
-							{modal}
-						</main>
-						<Footer />
+						<AuthProvider>
+							<Header />
+							<main className="main">
+								{children}
+								{modal}
+							</main>
+							<Footer />
+						</AuthProvider>
 					</div>
 					<Toaster />
 				</TanStackProvider>

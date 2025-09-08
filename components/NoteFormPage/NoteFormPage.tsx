@@ -6,10 +6,11 @@ import css from "./NoteFormPage.module.css"
 //import * as Yup from "yup"
 import { useMutation } from "@tanstack/react-query"
 import type { NotePost, Tag } from "@/types/note"
-import { createNote } from "@/lib/api"
+import { createNote } from "@/lib/api/api"
 import toastMessage, { MyToastType } from "@/lib/messageService"
 import { useRouter } from "next/navigation"
 import { useTaskStore } from "@/lib/store/noteStore"
+import { TAGS_ARRAY } from "@/lib/vars"
 
 //interface NoteFormProps {
 //	noteObject: Note | null
@@ -20,6 +21,8 @@ export default function NoteFormPage() {
 	const fieldId = useId()
 	const router = useRouter()
 	const { draft, setDraft, resetDraft } = useTaskStore()
+
+	const tagsValues = TAGS_ARRAY
 
 	const [status, setStatus] = useState<{ toastText: string; buttonText: string }>({
 		toastText: "created",
@@ -118,11 +121,11 @@ export default function NoteFormPage() {
 						onChange={(e) => setDraft({ ...draft, tag: e.target.value as Tag })}
 					>
 						<option value="">-- Choose tag --</option>
-						<option value="Todo">Todo</option>
-						<option value="Work">Work</option>
-						<option value="Personal">Personal</option>
-						<option value="Meeting">Meeting</option>
-						<option value="Shopping">Shopping</option>
+						{tagsValues.map((tag) => (
+							<option key={tag} value={tag}>
+								{tag}
+							</option>
+						))}
 					</select>
 					{/*<ErrorMessage name="tag" component="span" className={css.error} />*/}
 				</div>

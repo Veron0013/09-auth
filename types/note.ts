@@ -9,6 +9,7 @@ export interface Note {
 	content: string
 	createdAt: string
 	updatedAt: string
+	userId: string
 	tag: Tag
 }
 
@@ -16,7 +17,18 @@ export type NoteId = Note["id"]
 
 export type NotePost = Partial<Note>
 
-export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping"
+export type Tag =
+	| "Work"
+	| "Personal"
+	| "Meeting"
+	| "Shopping"
+	| "Ideas"
+	| "Travel"
+	| "Finance"
+	| "Health"
+	| "Important"
+	| "Todo"
+
 export type SortBy = "title" | "dateCreated" | "tag"
 
 export type ConfirmDimentions = {

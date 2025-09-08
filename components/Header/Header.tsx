@@ -2,6 +2,7 @@ import Link from "next/link"
 import React from "react"
 import css from "@/components/Header/Header.module.css"
 import TagsMenu from "../TagsMenu/TagsMenu"
+import AuthNavigation from "../AuthNavigation/AuthNavigation"
 
 export default async function Header() {
 	return (
@@ -14,12 +15,10 @@ export default async function Header() {
 					<li>
 						<Link href="/">Home</Link>
 					</li>
-					{/*<li>
-						<Link href="/notes">Notes</Link>
-					</li>*/}
 					<li>
 						<TagsMenu />
 					</li>
+					<AuthNavigation />
 				</ul>
 			</nav>
 		</header>

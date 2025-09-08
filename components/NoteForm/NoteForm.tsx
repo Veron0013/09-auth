@@ -4,8 +4,9 @@ import css from "./NoteForm.module.css"
 import * as Yup from "yup"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { Note, NotePost, Tag } from "@/types/note"
-import { createNote, updateNote } from "@/lib/api"
+import { createNote, updateNote } from "@/lib/api/api"
 import toastMessage, { MyToastType } from "@/lib/messageService"
+import { TAGS_ARRAY } from "@/lib/vars"
 
 interface NoteFormProps {
 	noteObject: Note | null
@@ -19,6 +20,8 @@ export default function NoteForm({ noteObject, onClose }: NoteFormProps) {
 		toastText: !noteObject ? "created" : "updated",
 		buttonText: !noteObject ? "Create" : "Update",
 	})
+
+	const tagsValues = TAGS_ARRAY
 
 	interface NotesFormValues {
 		title: string
@@ -35,7 +38,7 @@ export default function NoteForm({ noteObject, onClose }: NoteFormProps) {
 	const NotesSchema = Yup.object().shape({
 		title: Yup.string().min(3, "too small").max(50, "too large").required("required"),
 		content: Yup.string().max(500, "too large"),
-		tag: Yup.string().oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"]).required("required"),
+		tag: Yup.string().oneOf(tagsValues).required("required"),
 	})
 
 	const saveNote = async (noteData: NotePost) => {
@@ -115,11 +118,11 @@ export default function NoteForm({ noteObject, onClose }: NoteFormProps) {
 						<label htmlFor="tag">Tag</label>
 						<Field as="select" id={`${fieldId}-tag`} name="tag" className={css.select}>
 							<option value="">-- Choose tag --</option>
-							<option value="Todo">Todo</option>
-							<option value="Work">Work</option>
-							<option value="Personal">Personal</option>
-							<option value="Meeting">Meeting</option>
-							<option value="Shopping">Shopping</option>
+							{tagsValues.map((tag) => (
+								<option key={tag} value={tag}>
+									{tag}
+								</option>
+							))}
 						</Field>
 						<ErrorMessage name="tag" component="span" className={css.error} />
 					</div>

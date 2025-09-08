@@ -1,4 +1,4 @@
-import { createQueryParams, fetchNotes } from "@/lib/api"
+import { createQueryParams, fetchNotes } from "@/lib/api/api"
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query"
 import NotesClient from "./Notes.client"
 import { Metadata } from "next"
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			title: `Notes: ${noteFilter}`,
 			description: `Notes filter: ${noteFilter}`,
-			url: `https://08-zustand-eight-rouge.vercel.app/notes/filter/${noteFilter}`,
+			url: `https://09-auth-eight-rouge.vercel.app/notes/filter/${noteFilter}`,
 			siteName: "NoteHub",
 			images: [
 				{

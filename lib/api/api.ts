@@ -1,9 +1,29 @@
 import axios from "axios"
-import { MAIN_URL, PER_PAGE } from "@/lib/vars"
+import { MAIN_URL, PER_PAGE, TAGS_ARRAY } from "@/lib/vars"
 import type { Note, NoteId, NotePost, NotesData, SortBy, Tag } from "@/types/note"
+import { User } from "@/types/user"
 
-axios.defaults.baseURL = MAIN_URL
-axios.defaults.headers.common["Authorization"] = `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
+const nextServer = axios.create({
+	baseURL: "http://localhost:3000/api",
+	withCredentials: true, // дозволяє axios працювати з cookie
+})
+
+//axios.defaults.baseURL = MAIN_URL
+//axios.defaults.headers.common["Authorization"] = `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
+export type LoginRequest = {
+	email: string
+	password: string
+}
+
+export type RegisterRequest = {
+	email: string
+	password: string
+	userName: string
+}
+
+type CheckSessionRequest = {
+	success: boolean
+}
 
 export interface SearchParams {
 	search: string
@@ -26,7 +46,7 @@ export type Category = {
 }
 
 export const getCategories = (): string[] => {
-	return ["Todo", "Work", "Personal", "Meeting", "Shopping"]
+	return TAGS_ARRAY
 }
 
 export const createQueryParams = (search = "", page = 1, tag?: string): ApiQueryParams => {
@@ -68,4 +88,30 @@ export const updateNote = async (queryParams: NotePost, id: NoteId): Promise<Not
 export const fetchNoteById = async (id: NoteId): Promise<Note> => {
 	const response = await axios.get<Note>(`${MAIN_URL}/${id}`)
 	return response.data
+}
+
+////////////////////////////////////////
+
+export const login = async (data: LoginRequest) => {
+	const res = await nextServer.post<User>("/auth/login", data)
+	return res.data
+}
+
+export const register = async (data: RegisterRequest) => {
+	const res = await nextServer.post<User>("/auth/register", data)
+	return res.data
+}
+
+export const checkSession = async () => {
+	const res = await nextServer.get<CheckSessionRequest>("/auth/session")
+	return res.data.success
+}
+
+export const getMe = async () => {
+	const { data } = await nextServer.get<User>("/auth/me")
+	return data
+}
+
+export const logout = async (): Promise<void> => {
+	await nextServer.post("/auth/logout")
 }

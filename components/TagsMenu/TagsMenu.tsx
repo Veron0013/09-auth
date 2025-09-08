@@ -3,9 +3,10 @@
 import Link from "next/link"
 import css from "./TagsMenu.module.css"
 import { useEffect, useRef, useState } from "react"
+import { TAGS_ARRAY } from "@/lib/vars"
 
 export default function TagsMenu() {
-	const tags = ["Todo", "Work", "Personal", "Meeting", "Shopping"]
+	const tags = TAGS_ARRAY
 
 	const [buttonTitle, setButtonTitle] = useState("Notes")
 	const [isOpen, setIsOpen] = useState(false)
