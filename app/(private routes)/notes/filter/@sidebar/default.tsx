@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/api/api"
+import { getCategories } from "@/lib/api/clientApi"
 import css from "./Sidebar.module.css"
 import Link from "next/link"
 

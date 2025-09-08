@@ -1,18 +1,42 @@
+"use client"
+
 import Link from "next/link"
 import css from "./EditProfilePage.module.css"
-function EditProfile() {
+import AvatarPicker from "@/components/AvatarPicker/AvatarPicker"
+import { useEffect, useState } from "react"
+import { getMe, updateMe } from "@/lib/api/clientApi"
+
+const EditProfile = () => {
+	const [userName, setUserName] = useState("")
+	const [avatar, setPhotoUrl] = useState("")
+
+	useEffect(() => {
+		getMe().then((user) => {
+			setUserName(user.username ?? "")
+			setPhotoUrl(user.avatar ?? "")
+		})
+	}, [])
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUserName(event.target.value)
+	}
+
+	const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		await updateMe({ username: userName, avatar })
+	}
 	return (
 		<div>
 			<main className={css.mainContent}>
 				<div className={css.profileCard}>
 					<h1 className={css.formTitle}>Edit Profile</h1>
+					<AvatarPicker profilePhotoUrl={avatar} />
+					{/*<Image src="avatar" alt="User Avatar" width={120} height={120} className={css.avatar} />*/}
 
-					<img src="avatar" alt="User Avatar" width={120} height={120} className={css.avatar} />
-
-					<form className={css.profileInfo}>
+					<form className={css.profileInfo} onSubmit={handleSaveUser}>
 						<div className={css.usernameWrapper}>
 							<label htmlFor="username">Username:</label>
-							<input id="username" type="text" className={css.input} />
+							<input id="username" type="text" className={css.input} value={userName} onChange={handleChange} />
 						</div>
 
 						<p>Email: user_email@example.com</p>

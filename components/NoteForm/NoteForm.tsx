@@ -4,7 +4,7 @@ import css from "./NoteForm.module.css"
 import * as Yup from "yup"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { Note, NotePost, Tag } from "@/types/note"
-import { createNote, updateNote } from "@/lib/api/api"
+import { createNote, updateNote } from "@/lib/api/clientApi"
 import toastMessage, { MyToastType } from "@/lib/messageService"
 import { TAGS_ARRAY } from "@/lib/vars"
 
