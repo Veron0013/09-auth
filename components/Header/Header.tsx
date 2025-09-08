@@ -15,10 +15,10 @@ export default async function Header() {
 					<li>
 						<Link href="/">Home</Link>
 					</li>
+					<AuthNavigation />
 					<li>
 						<TagsMenu />
 					</li>
-					<AuthNavigation />
 				</ul>
 			</nav>
 		</header>

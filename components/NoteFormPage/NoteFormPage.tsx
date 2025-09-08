@@ -11,6 +11,8 @@ import toastMessage, { MyToastType } from "@/lib/messageService"
 import { useRouter } from "next/navigation"
 import { useTaskStore } from "@/lib/store/noteStore"
 import { TAGS_ARRAY } from "@/lib/vars"
+import Loading from "@/app/loading"
+import Error from "@/app/error"
 
 //interface NoteFormProps {
 //	noteObject: Note | null
@@ -51,7 +53,7 @@ export default function NoteFormPage() {
 		return await createNote(noteData) // POST
 	}
 
-	const { mutate, isPending } = useMutation({ mutationFn: saveNote })
+	const { mutate, isPending, isError, error: apiError } = useMutation({ mutationFn: saveNote })
 
 	//const handleSubmit = async (values: NotesFormValues, formikHelpers: FormikHelpers<NotesFormValues>) => {
 	const handleSubmit = (e: React.FormEvent) => {
@@ -140,6 +142,8 @@ export default function NoteFormPage() {
 				</div>
 			</form>
 			{/*</Formik>*/}
+			{isPending && <Loading />}
+			{isError && <Error error={apiError} />}
 		</div>
 	)
 }

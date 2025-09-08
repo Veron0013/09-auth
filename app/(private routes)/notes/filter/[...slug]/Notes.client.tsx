@@ -13,6 +13,8 @@ import NoteList from "@/components/NoteList/NoteList"
 import Modal from "@/components/Modal/Modal"
 import NoteForm from "@/components/NoteForm/NoteForm"
 import { useRouter } from "next/navigation"
+import Loading from "@/app/loading"
+import Error from "@/app/error"
 
 type Props = {
 	tag: string
@@ -38,7 +40,12 @@ const NotesClient = ({ tag }: Props) => {
 		return res
 	}
 
-	const { data } = useQuery({
+	const {
+		data,
+		isPending,
+		isError,
+		error: apiError,
+	} = useQuery({
 		queryKey: ["notesQuery", notehubQuery, currentPage, tag],
 		queryFn: async () => fetchQueryData(),
 		placeholderData: keepPreviousData,
@@ -87,6 +94,8 @@ const NotesClient = ({ tag }: Props) => {
 					<NoteForm onClose={closeModal} noteObject={noteObject} />
 				</Modal>
 			)}
+			{isPending && <Loading />}
+			{isError && <Error error={apiError} />}
 		</div>
 	)
 }

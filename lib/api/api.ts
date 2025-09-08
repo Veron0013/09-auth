@@ -65,28 +65,30 @@ export const createQueryParams = (search = "", page = 1, tag?: string): ApiQuery
 
 export const fetchNotes = async (queryParams: ApiQueryParams): Promise<NotesData> => {
 	//const url: string = id === null ? MAIN_URL : `${MAIN_URL}/${id}`
-	const response = await axios.get<NotesData>(MAIN_URL, queryParams)
+	//const response = await axios.get<NotesData>(MAIN_URL, queryParams)
+	const response = await nextServer.get<NotesData>("/notes", queryParams)
 	return response.data
 }
 
 export const deleteNote = async (id: NoteId): Promise<Note> => {
-	const response = await axios.delete<Note>(`${MAIN_URL}/${id}`)
+	const response = await nextServer.delete<Note>(`/notes/${id}`)
 	return response.data
 }
 
 export const createNote = async (queryParams: NotePost): Promise<Note> => {
 	//console.log("creation", queryParams)
-	const response = await axios.post<Note>(MAIN_URL, queryParams)
+	const response = await nextServer.post<Note>("/notes", queryParams)
 	return response.data
 }
 
 export const updateNote = async (queryParams: NotePost, id: NoteId): Promise<Note> => {
-	const response = await axios.patch<Note>(`${MAIN_URL}/${id}`, queryParams)
+	const response = await nextServer.patch<Note>(`/notes/${id}`, queryParams)
 	return response.data
 }
 
 export const fetchNoteById = async (id: NoteId): Promise<Note> => {
-	const response = await axios.get<Note>(`${MAIN_URL}/${id}`)
+	//const response = await axios.get<Note>(`${MAIN_URL}/${id}`)
+	const response = await nextServer.get<Note>(`/notes/${id}`)
 	return response.data
 }
 
@@ -95,6 +97,10 @@ export const fetchNoteById = async (id: NoteId): Promise<Note> => {
 export const login = async (data: LoginRequest) => {
 	const res = await nextServer.post<User>("/auth/login", data)
 	return res.data
+}
+
+export const logout = async (): Promise<void> => {
+	await nextServer.post("/auth/logout")
 }
 
 export const register = async (data: RegisterRequest) => {
@@ -108,10 +114,6 @@ export const checkSession = async () => {
 }
 
 export const getMe = async () => {
-	const { data } = await nextServer.get<User>("/auth/me")
+	const { data } = await nextServer.get<User>("/users/me")
 	return data
-}
-
-export const logout = async (): Promise<void> => {
-	await nextServer.post("/auth/logout")
 }
