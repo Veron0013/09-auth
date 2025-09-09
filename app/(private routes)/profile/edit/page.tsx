@@ -1,22 +1,25 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import css from "./EditProfilePage.module.css"
-import AvatarPicker from "@/components/AvatarPicker/AvatarPicker"
+//import AvatarPicker from "@/components/AvatarPicker/AvatarPicker"
 import { useEffect, useState } from "react"
 import { getMe, updateMe } from "@/lib/api/clientApi"
 import { useRouter } from "next/navigation"
+import { User } from "@/types/user"
+import { useAuthStore } from "@/lib/store/authStore"
 
 const EditProfile = () => {
 	const router = useRouter()
+	const [user, setEditUser] = useState<User | null>(null)
 	const [userName, setUserName] = useState("")
-	const [avatar, setPhotoUrl] = useState("")
-	const [imageFile, setImageFile] = useState<File | null>(null)
+	const setUser = useAuthStore((state) => state.setUser)
+	//const [imageFile, setImageFile] = useState<File | null>(null)
 
 	useEffect(() => {
 		getMe().then((user) => {
-			setUserName(user.username ?? "")
-			setPhotoUrl(user.avatar ?? "")
+			setEditUser(user ?? null)
 		})
 	}, [])
 
@@ -28,17 +31,20 @@ const EditProfile = () => {
 		event.preventDefault()
 		//await updateMe({ username: userName, avatar })
 		await updateMe({ username: userName })
+		if (user) {
+			setUser(user)
+		}
 		router.push("/profile")
 	}
 	return (
-		<div>
+		<>
 			<main className={css.mainContent}>
 				<div className={css.profileCard}>
 					<h1 className={css.formTitle}>Edit Profile</h1>
-					<AvatarPicker profilePhotoUrl={avatar} onChangePhoto={setImageFile} />
-					{imageFile && <p>{imageFile.name}</p>}
+					{/*<AvatarPicker profilePhotoUrl={avatar} onChangePhoto={setImageFile} />
+					{imageFile && <p>{imageFile.name}</p>}*/}
+					<Image src={user?.avatar || ""} alt="User Avatar" width={120} height={120} className={css.avatar} />
 					<p>Sorry, uploading images under maintanance</p>
-					{/*<Image src="avatar" alt="User Avatar" width={120} height={120} className={css.avatar} />*/}
 
 					<form className={css.profileInfo} onSubmit={handleSaveUser}>
 						<div className={css.usernameWrapper}>
@@ -46,7 +52,7 @@ const EditProfile = () => {
 							<input id="username" type="text" className={css.input} value={userName} onChange={handleChange} />
 						</div>
 
-						<p>Email: user_email@example.com</p>
+						<p>{`Email: ${user?.email || ""}`}</p>
 
 						<div className={css.actions}>
 							<button type="submit" className={css.saveButton}>
@@ -59,7 +65,7 @@ const EditProfile = () => {
 					</form>
 				</div>
 			</main>
-		</div>
+		</>
 	)
 }
 

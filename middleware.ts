@@ -2,10 +2,9 @@
 
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { parse } from "cookie"
 import { checkServerSession } from "./lib/api/serverApi"
 
-const privateRoutes = ["/profile"]
+const privateRoutes = ["/profile", "/notes"]
 const publicRoutes = ["/sign-in", "/sign-up"]
 
 export async function middleware(request: NextRequest) {
@@ -24,36 +23,46 @@ export async function middleware(request: NextRequest) {
 			const data = await checkServerSession()
 			const setCookie = data.headers["set-cookie"]
 
+			//if (setCookie) {
+			//	const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie]
+			//	for (const cookieStr of cookieArray) {
+			//		const parsed = parse(cookieStr)
+			//		const options = {
+			//			expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+			//			path: parsed.Path,
+			//			maxAge: Number(parsed["Max-Age"]),
+			//		}
+			//		if (parsed.accessToken) cookieStore.set("accessToken", parsed.accessToken, options)
+			//		if (parsed.refreshToken) cookieStore.set("refreshToken", parsed.refreshToken, options)
+			//	}
+			//	// Якщо сесія все ще активна:
+			//	// для публічного маршруту — виконуємо редірект на головну.
+			//	if (isPublicRoute) {
+			//		return NextResponse.redirect(new URL("/", request.url), {
+			//			headers: {
+			//				Cookie: cookieStore.toString(),
+			//			},
+			//		})
+			//	}
+			//	// для приватного маршруту — дозволяємо доступ
+			//	if (isPrivateRoute) {
+			//		return NextResponse.next({
+			//			headers: {
+			//				Cookie: cookieStore.toString(),
+			//			},
+			//		})
+			//	}
+			//}
+
+			const response = isPrivateRoute ? NextResponse.next() : NextResponse.redirect(new URL("/", request.url))
+
 			if (setCookie) {
 				const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie]
-				for (const cookieStr of cookieArray) {
-					const parsed = parse(cookieStr)
-					const options = {
-						expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-						path: parsed.Path,
-						maxAge: Number(parsed["Max-Age"]),
-					}
-					if (parsed.accessToken) cookieStore.set("accessToken", parsed.accessToken, options)
-					if (parsed.refreshToken) cookieStore.set("refreshToken", parsed.refreshToken, options)
-				}
-				// Якщо сесія все ще активна:
-				// для публічного маршруту — виконуємо редірект на головну.
-				if (isPublicRoute) {
-					return NextResponse.redirect(new URL("/", request.url), {
-						headers: {
-							Cookie: cookieStore.toString(),
-						},
-					})
-				}
-				// для приватного маршруту — дозволяємо доступ
-				if (isPrivateRoute) {
-					return NextResponse.next({
-						headers: {
-							Cookie: cookieStore.toString(),
-						},
-					})
+				for (const c of cookieArray) {
+					response.headers.append("set-cookie", c)
 				}
 			}
+			return response
 		}
 		// Якщо refreshToken або сесії немає:
 		// публічний маршрут — дозволяємо доступ
@@ -76,8 +85,11 @@ export async function middleware(request: NextRequest) {
 	if (isPrivateRoute) {
 		return NextResponse.next()
 	}
+
+	//fallback
+	return NextResponse.next()
 }
 
 export const config = {
-	matcher: ["/profile/:path*", "/sign-in", "/sign-up"],
+	matcher: ["/profile/:path*", "/notes/:path*", "/sign-in", "/sign-up"],
 }

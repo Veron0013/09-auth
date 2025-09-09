@@ -35,10 +35,7 @@ export async function POST(req: NextRequest) {
 		console.log(error)
 		if (isAxiosError(error)) {
 			logErrorResponse(error.response?.data)
-			return NextResponse.json(
-				{ error: error.response?.data?.message || error.message, response: error.response?.data },
-				{ status: error.status }
-			)
+			return NextResponse.json({ error: error.message, response: error.response?.data }, { status: error.status })
 		}
 		logErrorResponse({ message: (error as Error).message })
 		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })

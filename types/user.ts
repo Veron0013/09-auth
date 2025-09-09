@@ -1,6 +1,7 @@
 export type User = {
-	id: string
 	email: string
-	username?: string
-	avatar?: string
+	username: string
+	avatar: string
 }
+
+export type EditUser = Omit<User, "avatar">
