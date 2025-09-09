@@ -2,6 +2,30 @@ import Link from "next/link"
 import css from "./ProfilePage.module.css"
 import Image from "next/image"
 import { getServerMe } from "@/lib/api/serverApi"
+import { Metadata } from "next"
+
+export async function generateMetadata(): Promise<Metadata> {
+	const userData = await getServerMe()
+	return {
+		title: `Profile : ${userData.username}`,
+		description: `${userData.username} Notehub user profile`,
+		openGraph: {
+			title: `Profile : ${userData.username}`,
+			description: `${userData.username} Notehub user profile`,
+			url: `https://notehub-app-auth.vercel.app/profile`,
+			siteName: "NoteHub",
+			images: [
+				{
+					url: "https://blues.com/wp-content/uploads/2023/02/notehub-js.webp",
+					width: 1200,
+					height: 630,
+					alt: `Profile : ${userData.username}`,
+				},
+			],
+			type: "article",
+		},
+	}
+}
 
 const Profile = async () => {
 	const user = await getServerMe()
