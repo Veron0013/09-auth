@@ -28,7 +28,7 @@ export interface SearchParams {
 	sortBy?: SortBy
 }
 
-interface ApiQueryParams {
+export interface ApiQueryParams {
 	params: SearchParams
 }
 
