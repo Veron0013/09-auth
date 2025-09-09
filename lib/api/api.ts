@@ -1,6 +1,6 @@
 import axios from "axios"
 
 export const nextServer = axios.create({
-	baseURL: "http://localhost:3000/api",
-	withCredentials: true, // дозволяє axios працювати з cookie
+	baseURL: process.env.NEXT_PUBLIC_API_URL + "/api",
+	withCredentials: true,
 })

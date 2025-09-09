@@ -14,9 +14,7 @@ const SignUp = () => {
 
 	const handleSubmit = async (formData: FormData) => {
 		try {
-			// Типізуємо дані форми
 			const formValues = Object.fromEntries(formData) as RegisterRequest
-			// Виконуємо запит
 			const res = await register(formValues)
 			if (res) {
 				setUser(res)
@@ -49,7 +47,7 @@ const SignUp = () => {
 						</button>
 					</div>
 
-					{error && <p className={css.error}>Error</p>}
+					{error && <p className={css.error}>{error}</p>}
 				</form>
 			</main>
 		</>

@@ -122,3 +122,10 @@ export const updateMe = async (payload: UpdateUserRequest) => {
 	const res = await nextServer.patch<User>("/users/me", payload)
 	return res.data
 }
+
+export const uploadImage = async (file: File): Promise<string> => {
+	const formData = new FormData()
+	formData.append("file", file)
+	const { data } = await nextServer.post("/upload", formData)
+	return data.url
+}

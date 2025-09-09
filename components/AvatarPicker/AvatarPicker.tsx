@@ -7,10 +7,11 @@ import Image from "next/image"
 import css from "./AvatarPicker.module.css"
 
 type Props = {
+	onChangePhoto: (file: File | null) => void
 	profilePhotoUrl?: string
 }
 
-const AvatarPicker = ({ profilePhotoUrl }: Props) => {
+const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
 	const [previewUrl, setPreviewUrl] = useState("")
 	const [error, setError] = useState("")
 
@@ -44,6 +45,7 @@ const AvatarPicker = ({ profilePhotoUrl }: Props) => {
 	}
 
 	const handleRemove = () => {
+		onChangePhoto(null) // очищуємо батьківський стан
 		setPreviewUrl("")
 	}
 
