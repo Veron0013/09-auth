@@ -1,4 +1,4 @@
-import NoteFormPage from "@/components/NoteFormPage/NoteFormPage"
+import NoteFormPage from "@/components/NoteForm/NoteForm"
 import css from "./page.module.css"
 import { Metadata } from "next"
 

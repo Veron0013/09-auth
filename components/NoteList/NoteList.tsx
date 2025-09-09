@@ -4,7 +4,7 @@ import css from "./NoteList.module.css"
 import { deleteNote } from "@/lib/api/clientApi"
 import { useState } from "react"
 import toastMessage, { MyToastType } from "@/lib/messageService"
-import ConfirmMessage from "../ConfirnMessage/ConfirnMessage"
+import ConfirmMessage from "../ConfirmMessage/ConfirmMessage"
 import Link from "next/link"
 
 interface NoteListProps {
@@ -19,7 +19,7 @@ export default function NoteList({ notes, onSelect, tag }: NoteListProps) {
 	const [noteSelectedId, setNoteSelectedId] = useState<NoteId | null>(null)
 	const [confirmPosition, setConfirmPosition] = useState<ConfirmDimentions | null>(null)
 
-	const { mutate: deleteMutation } = useMutation<Note, Error, string>({
+	const { mutate: deleteMutation } = useMutation<Note, Error, NoteId>({
 		mutationFn: deleteNote,
 		onSuccess(note) {
 			toastMessage(MyToastType.success, `Note ${note.title} deleted`)
@@ -30,24 +30,30 @@ export default function NoteList({ notes, onSelect, tag }: NoteListProps) {
 		},
 	})
 
-	const handleClick = (e: React.MouseEvent<HTMLLIElement>, item: Note) => {
-		const noteSelected: NoteId = e.currentTarget.id as NoteId
+	//const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+	//	const noteSelected: NoteId = e.currentTarget.id as NoteId
 
-		if (!noteSelected) return
+	//	if (!noteSelected) return
 
+	//	setNoteSelectedId(noteSelected)
+
+	//	//const target = e.target as HTMLElement
+	//}
+
+	const handleDeleteNote = (e: React.MouseEvent<HTMLButtonElement>) => {
+		const li = e.currentTarget.closest("li")
+		if (!li) return
+
+		const noteSelected: NoteId = li.id as NoteId
 		setNoteSelectedId(noteSelected)
 
-		const target = e.target as HTMLElement
-
-		if (target.closest("#deleteButton")) {
-			const rect = e.currentTarget.getBoundingClientRect()
-			setConfirmPosition({ top: rect.top, left: rect.left, width: rect.width, height: rect.height })
-			setShowConfirm(true)
-		}
-		if (target.closest("#editButton")) {
-			const noteObjectSelected = { ...item }
-			return onSelect(noteObjectSelected)
-		}
+		const rect = li.getBoundingClientRect()
+		setConfirmPosition({ top: rect.top, left: rect.left, width: rect.width, height: rect.height })
+		setShowConfirm(true)
+	}
+	const handleEditNote = (item: Note) => {
+		const noteObjectSelected = { ...item }
+		return onSelect(noteObjectSelected)
 	}
 
 	return (
@@ -58,7 +64,7 @@ export default function NoteList({ notes, onSelect, tag }: NoteListProps) {
 						<li
 							key={item.id}
 							id={item.id.toString()}
-							onClick={(e) => handleClick(e, item)}
+							//onClick={handleClick}
 							className={css.listItem}
 							style={{ animationDelay: `${index * 100}ms` }}
 						>
@@ -67,14 +73,12 @@ export default function NoteList({ notes, onSelect, tag }: NoteListProps) {
 							<div className={css.footer}>
 								<span className={css.tag}>{item.tag}</span>
 								<div className={css.buttonsWrapper}>
-									<button className={`${css.button} ${css.delete}`} id="deleteButton">
+									<button className={`${css.button} ${css.delete}`} onClick={handleDeleteNote}>
 										Delete
 									</button>
-									<button className={`${css.button} ${css.edit}`} id="editButton">
+									<button className={`${css.button} ${css.edit}`} onClick={() => handleEditNote(item)}>
 										Edit
 									</button>
-									{/*href={{`/notes/${item.id}`, query: { from: slug.join("/") }>*/}
-
 									<Link
 										className={`${css.button} ${css.details}`}
 										href={{

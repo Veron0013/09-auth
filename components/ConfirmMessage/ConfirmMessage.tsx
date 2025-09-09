@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom"
-import css from "./ConfirnMessage.module.css"
+import css from "./ConfirmMessage.module.css"
 import { CONFIRM_DELETE_MESSAGE } from "@/lib/vars"
 import type { ConfirmDimentions } from "@/types/note"
 import { useEffect } from "react"

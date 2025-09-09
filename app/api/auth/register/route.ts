@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 	} catch (error) {
-		console.log(error)
+		//console.log(error)
 		if (isAxiosError(error)) {
 			logErrorResponse(error.response?.data)
 			return NextResponse.json({ error: error.message, response: error.response?.data }, { status: error.status })

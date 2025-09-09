@@ -12,20 +12,18 @@ interface ModalProps {
 export default function ModalNote({ children, backPage }: ModalProps) {
 	const router = useRouter()
 
-	const close = () => router.back()
+	const closeModal = () => router.back()
 
 	const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		if (event.target === event.currentTarget) {
-			close()
+			closeModal()
 		}
 	}
-
-	//console.log("modal note")
 
 	return createPortal(
 		<div className={css.backdrop} role="dialog" aria-modal="true" onClick={handleBackdropClick}>
 			<div className={css.modal}>
-				<button onClick={close}>{`< Go back to ${backPage === "All" ? "All notes" : backPage}`}</button>
+				<button onClick={closeModal}>{`< Go back to ${backPage === "All" ? "All notes" : backPage}`}</button>
 				{children}
 			</div>
 		</div>,
