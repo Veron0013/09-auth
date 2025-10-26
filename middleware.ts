@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
 			}
 			return response
 		} else {
-			console.log("go home")
+			console.log("go home", sessionId, refreshToken)
 			goHome(cookieStore, request)
 		}
 		// Якщо refreshToken або сесії немає:
