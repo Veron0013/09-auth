@@ -12,7 +12,7 @@ import Pagination from "@/components/Pagination/Pagination"
 import NoteList from "@/components/NoteList/NoteList"
 import Modal from "@/components/Modal/Modal"
 import NoteForm from "@/components/NoteFormModal/NoteFormModal"
-import { useRouter } from "next/navigation"
+//import { useRouter } from "next/navigation"
 import Loading from "@/app/loading"
 import Error from "@/app/error"
 
@@ -28,7 +28,7 @@ const NotesClient = ({ tag }: Props) => {
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [noteObject, setNoteObject] = useState<Note | null>(null)
-	const router = useRouter()
+	//const router = useRouter()
 
 	const fetchQueryData = async () => {
 		const res: NotesData = await fetchNotes(createQueryParams(notehubQuery, currentPage, tag))
