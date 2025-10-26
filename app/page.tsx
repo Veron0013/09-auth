@@ -15,6 +15,8 @@ export default function Home() {
 						and structured organization, NoteHub offers a streamlined experience for anyone who values clarity and
 						productivity.
 					</p>
+					<p className={css.description}>Login : test@gmail.com</p>
+					<p className={css.description}>Password : 12345678</p>
 				</div>
 			</main>
 		</div>
