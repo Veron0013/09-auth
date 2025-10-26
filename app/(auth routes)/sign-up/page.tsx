@@ -16,7 +16,10 @@ const SignUp = () => {
 		try {
 			const formValues = Object.fromEntries(formData) as RegisterRequest
 			const res = await register(formValues)
-			if (res) {
+
+			if (!res.email && (res.error === "" || res.error === undefined)) {
+				setError("Server under maintanance")
+			} else if (res) {
 				setUser(res)
 				router.push("/profile")
 			} else {

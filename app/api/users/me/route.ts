@@ -9,7 +9,6 @@ import { isAxiosError } from "axios"
 export async function GET() {
 	try {
 		const cookieStore = await cookies()
-
 		const res = await api.get("/users/me", {
 			headers: {
 				Cookie: cookieStore.toString(),
@@ -29,11 +28,20 @@ export async function GET() {
 export async function PATCH(request: Request) {
 	try {
 		const cookieStore = await cookies()
-		const body = await request.json()
+		const formData = await request.formData()
+
+		const username = formData.get("username") as string | null
+		const avatar = formData.get("avatar") as File | null
+
+		const body = new FormData()
+
+		if (username) body.append("username", username)
+		if (avatar) body.append("avatar", avatar)
 
 		const res = await api.patch("/users/me", body, {
 			headers: {
 				Cookie: cookieStore.toString(),
+				"Content-Type": "multipart/form-data",
 			},
 		})
 		return NextResponse.json(res.data, { status: res.status })

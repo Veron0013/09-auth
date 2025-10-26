@@ -8,6 +8,8 @@ import { PER_PAGE } from "../vars"
 export const checkServerSession = async () => {
 	// Дістаємо поточні cookie
 	const cookieStore = await cookies()
+
+	console.log("cookies", cookieStore)
 	const res = await nextServer.get("/auth/session", {
 		headers: {
 			// передаємо кукі далі

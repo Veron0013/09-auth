@@ -46,3 +46,19 @@
 	background-color: #444;
 	color: #ddd;
 }
+
+.filterLayout {
+	display: flex;
+	gap: "24px";
+	flex-grow: 1
+}
+
+@media (max-width: 768px) {
+	.filterLayout {
+		gap: 0px;
+	}
+
+	.menuContainer {
+		display: none;
+	}
+}

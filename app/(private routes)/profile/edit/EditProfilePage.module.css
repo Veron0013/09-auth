@@ -82,7 +82,7 @@
   padding: 12px 24px;
   font-size: 18px;
   font-weight: 600;
-  background-color: #0d6efd;
+  background-color: #333;
   color: white;
   border: none;
   border-radius: 8px;
@@ -93,7 +93,9 @@
 }
 
 .saveButton:hover {
-  background-color: #0b5ed7;
+  background-color: white;
+  color: #333;
+  border: 1px solid #333;
 }
 
 .cancelButton {
@@ -105,6 +107,13 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.disabledCancelButton {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
 }
 
 .cancelButton:hover {

@@ -8,14 +8,16 @@ import { logErrorResponse } from "../../_utils/utils"
 export async function GET() {
 	try {
 		const cookieStore = await cookies()
+		//console.log("object", cookieStore)
 		const accessToken = cookieStore.get("accessToken")?.value
 		const refreshToken = cookieStore.get("refreshToken")?.value
+		const sessionId = cookieStore.get("sessionId")?.value
 
 		if (accessToken) {
 			return NextResponse.json({ success: true })
 		}
 
-		if (refreshToken) {
+		if (refreshToken && sessionId) {
 			const apiRes = await api.get("auth/session", {
 				headers: {
 					Cookie: cookieStore.toString(),
@@ -37,6 +39,7 @@ export async function GET() {
 
 					if (parsed.accessToken) cookieStore.set("accessToken", parsed.accessToken, options)
 					if (parsed.refreshToken) cookieStore.set("refreshToken", parsed.refreshToken, options)
+					if (parsed.sessionId) cookieStore.set("sessionId", parsed.sessionId, options)
 				}
 				return NextResponse.json({ success: true }, { status: 200 })
 			}

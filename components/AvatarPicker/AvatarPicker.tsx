@@ -36,6 +36,8 @@ const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
 				return
 			}
 
+			onChangePhoto(file)
+
 			const reader = new FileReader()
 			reader.onloadend = () => {
 				setPreviewUrl(reader.result as string)

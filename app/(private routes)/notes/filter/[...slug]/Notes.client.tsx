@@ -59,11 +59,11 @@ const NotesClient = ({ tag }: Props) => {
 	}, [data])
 
 	const debouncedQueryChange = useDebouncedCallback((value: string) => {
-		setNoteHubQuery(value)
+		setNoteHubQuery(value.trim())
 		setCurrentPage(1)
-	}, 300)
+	}, 400)
 
-	const handleNoteClick = (noteObjectOut: Note) => {
+	const handleNoteClick = (noteObjectOut: Note | null) => {
 		setNoteObject(noteObjectOut)
 		openModal()
 	}
@@ -84,7 +84,10 @@ const NotesClient = ({ tag }: Props) => {
 						}}
 					/>
 				)}
-				<button className={css.button} onClick={() => router.push("/notes/action/create/")}>
+				{/*<button className={css.button} onClick={() => router.push("/notes/action/create/")}>
+					Create note +
+				</button>*/}
+				<button className={css.button} onClick={() => handleNoteClick(null)}>
 					Create note +
 				</button>
 			</header>

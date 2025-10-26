@@ -19,8 +19,10 @@ const SignIn = () => {
 			const formValues = Object.fromEntries(formData) as LoginRequest
 			// Виконуємо запит
 			const res = await login(formValues)
-			// Виконуємо редірект або відображаємо помилку
-			if (res) {
+
+			if (!res.email && (res.error === "" || res.error === undefined)) {
+				setError("Server under maintanance")
+			} else if (res) {
 				setUser(res)
 				router.push("/profile")
 			} else {
@@ -49,8 +51,8 @@ const SignIn = () => {
 						<button type="submit" className={css.submitButton}>
 							Log in
 						</button>
-						{error && <p>{error}</p>}
 					</div>
+					{error && <p className={css.error}>{error}</p>}
 				</form>
 			</main>
 		</>

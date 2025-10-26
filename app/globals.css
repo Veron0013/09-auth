@@ -14,8 +14,8 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  --main-button-color: #406091;
-  --main-button-hover-color: #253753;
+  --main-button-color: #333;
+  --main-button-hover-color: white;
 }
 
 .layout {

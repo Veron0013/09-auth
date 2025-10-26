@@ -66,19 +66,33 @@ export const fetchNotes = async (queryParams: ApiQueryParams): Promise<NotesData
 }
 
 export const deleteNote = async (id: NoteId): Promise<Note> => {
-	const response = await nextServer.delete<Note>(`/notes/${id}`)
-	return response.data
+	const refreshSession = await checkSession()
+	if (refreshSession) {
+		const response = await nextServer.delete<Note>(`/notes/${id}`)
+		return response.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export const createNote = async (queryParams: NotePost): Promise<Note> => {
-	//console.log("creation", queryParams)
-	const response = await nextServer.post<Note>("/notes", queryParams)
-	return response.data
+	const refreshSession = await checkSession()
+	if (refreshSession) {
+		const response = await nextServer.post<Note>("/notes", queryParams)
+		return response.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export const updateNote = async (queryParams: NotePost, id: NoteId): Promise<Note> => {
-	const response = await nextServer.patch<Note>(`/notes/${id}`, queryParams)
-	return response.data
+	const refreshSession = await checkSession()
+	if (refreshSession) {
+		const response = await nextServer.patch<Note>(`/notes/${id}`, queryParams)
+		return response.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export const fetchNoteById = async (id: NoteId): Promise<Note> => {
@@ -115,11 +129,16 @@ export const getMe = async () => {
 
 export type UpdateUserRequest = {
 	username?: string
-	avatar?: string
+	avatar?: File | null
 }
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-	const res = await nextServer.patch<User>("/users/me", payload)
+	const formData = new FormData()
+
+	if (payload.username) formData.append("username", payload.username)
+	if (payload.avatar) formData.append("avatar", payload.avatar)
+
+	const res = await nextServer.patch<User>("/users/me", formData)
 	return res.data
 }
 

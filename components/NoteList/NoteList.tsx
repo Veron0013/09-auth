@@ -86,7 +86,7 @@ export default function NoteList({ notes, onSelect, tag }: NoteListProps) {
 											query: { from: tag },
 										}}
 									>
-										View details
+										Preview
 									</Link>
 								</div>
 							</div>

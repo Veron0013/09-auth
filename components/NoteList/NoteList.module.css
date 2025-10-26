@@ -63,12 +63,13 @@
 
 .button {
 	padding: 8px 12px;
-	color: #fff;
+	color: var(--main-button-hover-color);
 	font-weight: 500;
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: background-color 0.2s ease;
+	border: 1px solid transparent;
 }
 
 .delete {
@@ -93,6 +94,8 @@
 
 .details:hover {
 	background-color: var(--main-button-hover-color);
+	border: 1px solid var(--main-button-color);
+	color: var(--main-button-color);
 }
 
 .footer {

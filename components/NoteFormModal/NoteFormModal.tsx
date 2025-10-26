@@ -50,17 +50,6 @@ export default function NoteFormModal({ noteObject, onClose }: NoteFormProps) {
 
 	const { mutate, isPending } = useMutation({ mutationFn: saveNote })
 
-	//	,
-	//	onSuccess() {
-	//		onClose()
-	//		toastMessage(MyToastType.success, `Note successfully ${status.toastText}`)
-	//		queryClient.invalidateQueries({ queryKey: ["notesQuery"] })
-	//	},
-	//	onError(error: AxiosError) {
-	//		toastMessage(MyToastType.error, `Note not ${status.toastText}. Error found.${error.message} `)
-	//	},
-	//})
-
 	const handleSubmit = async (values: NotesFormValues, formikHelpers: FormikHelpers<NotesFormValues>) => {
 		setStatus({
 			toastText: !noteObject ? "created" : "updated",
