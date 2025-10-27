@@ -34,38 +34,38 @@ export default function TagsMenu() {
 			<button onClick={toggle} className={css.menuButton}>
 				{buttonTitle} ▾
 			</button>
-			{isOpen && (
-				<ul className={css.menuList}>
-					<li className={css.menuItem}>
-						<Link
-							className={css.menuLink}
-							href={`/notes/filter/All`}
-							onClick={() => {
-								toggle()
-								setButtonTitle("All notes")
-							}}
-						>
-							All notes
-						</Link>
-					</li>
-					{tags.map((item: string, index: number) => {
-						return (
-							<li key={index} className={css.menuItem}>
-								<Link
-									className={css.menuLink}
-									href={`/notes/filter/${item}`}
-									onClick={() => {
-										toggle()
-										setButtonTitle(item)
-									}}
-								>
-									{item}
-								</Link>
-							</li>
-						)
-					})}
-				</ul>
-			)}
+			{/*{isOpen && (*/}
+			<ul className={`${css.menuList} ${isOpen ? css.menuOpened : ""}`}>
+				<li className={css.menuItem}>
+					<Link
+						className={css.menuLink}
+						href={`/notes/filter/All`}
+						onClick={() => {
+							toggle()
+							setButtonTitle("All notes")
+						}}
+					>
+						All notes
+					</Link>
+				</li>
+				{tags.map((item: string, index: number) => {
+					return (
+						<li key={index} className={css.menuItem} style={{ animationDelay: `${index * 100}ms` }}>
+							<Link
+								className={css.menuLink}
+								href={`/notes/filter/${item}`}
+								onClick={() => {
+									toggle()
+									setButtonTitle(item)
+								}}
+							>
+								{item}
+							</Link>
+						</li>
+					)
+				})}
+			</ul>
+			{/*)}*/}
 		</div>
 	)
 }

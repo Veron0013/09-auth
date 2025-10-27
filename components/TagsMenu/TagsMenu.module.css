@@ -34,10 +34,29 @@
 	min-width: 180px;
 	width: 100%;
 	z-index: 1000;
+
+	opacity: 0;
+	transform: translateY(-20px);
+	pointer-events: none;
+	transition: all 0.3s ease;
+}
+
+.menuList.menuOpened {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: all;
 }
 
 .menuItem {
-	margin: 0;
+	opacity: 0;
+	transform: translateY(10px);
+}
+
+.menuList.menuOpened .menuItem {
+	animation-name: fadeUp;
+	animation-duration: 300ms;
+	animation-timing-function: 0.3s ease;
+	animation-fill-mode: forwards;
 }
 
 .menuLink {
@@ -46,10 +65,22 @@
 	color: #f0f0f0;
 	text-decoration: none;
 	font-size: 15px;
-	transition: background-color 0.2s ease;
 }
 
 .menuLink:hover {
 	background-color: #f0f0f0;
 	color: #333;
+}
+
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
