@@ -79,5 +79,5 @@ const goHome = (cookieStore: ReadonlyRequestCookies, request: NextRequest) => {
 	cookieStore.delete("accessToken")
 	cookieStore.delete("refreshToken")
 	cookieStore.delete("sessionId")
-	return NextResponse.redirect(new URL("/sign-up", request.url))
+	return NextResponse.redirect(new URL("/", request.url))
 }
