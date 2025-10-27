@@ -117,7 +117,7 @@ export default function NoteFormModal({ noteObject, onClose }: NoteFormProps) {
 					</div>
 
 					<div className={css.actions}>
-						<button type="button" className={css.cancelButton} onClick={onClose}>
+						<button type="button" className={css.cancelButton} disabled={isPending} onClick={onClose}>
 							Cancel
 						</button>
 						<button type="submit" className={css.submitButton} disabled={isPending}>
