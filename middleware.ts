@@ -15,6 +15,10 @@ export async function middleware(request: NextRequest) {
 	const refreshToken = cookieStore.get("refreshToken")?.value
 	const sessionId = cookieStore.get("sessionId")?.value
 
+	const ip = cookieStore.get("x-forwarded-for") || cookieStore.get("x-real-ip") || "unknown"
+
+	console.log("IP:", ip)
+
 	const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route))
 	const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route))
 
