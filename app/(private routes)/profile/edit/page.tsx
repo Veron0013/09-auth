@@ -33,12 +33,11 @@ const EditProfile = () => {
 	const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		setisUpdating(true)
-		await updateMe({ username: userName, avatar: imageFile })
-		//await updateMe({ username: userName })
-		if (user) {
-			setUser(user)
+		const updatedUser = await updateMe({ username: userName, avatar: imageFile })
+		if (updatedUser) {
+			setUser(updatedUser)
+			router.push("/profile")
 		}
-		router.push("/profile")
 		setisUpdating(false)
 	}
 	return (
