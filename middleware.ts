@@ -15,28 +15,22 @@ export async function middleware(request: NextRequest) {
 	const refreshToken = cookieStore.get("refreshToken")?.value
 	const sessionId = cookieStore.get("sessionId")?.value
 
-	const ip =
-		request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown"
+	const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
 
 	console.log("IP:", ip)
 
 	const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route))
 	const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route))
 
-	// === функція для створення відповіді з IP ===
-	const withIpHeader = (response: NextResponse) => {
-		response.headers.set("x-client-ip", ip)
-		return response
-	}
-
 	if (!accessToken) {
 		if (refreshToken && sessionId) {
 			const data = await checkServerSession()
 
+			//console.log("==middleware==", data)
+
 			if (!data.data.success) {
 				console.log("go home data")
-				const res = goHome(cookieStore, request)
-				return withIpHeader(res)
+				goHome(cookieStore, request)
 			}
 
 			const setCookie = data.headers["set-cookie"]
@@ -49,26 +43,38 @@ export async function middleware(request: NextRequest) {
 					response.headers.append("set-cookie", c)
 				}
 			}
-			return withIpHeader(response)
+			return response
 		} else {
 			console.log("go home", sessionId, refreshToken)
-			const res = goHome(cookieStore, request)
-			return withIpHeader(res)
+			goHome(cookieStore, request)
+		}
+		// Якщо refreshToken або сесії немає:
+		// публічний маршрут — дозволяємо доступ
+
+		if (isPublicRoute) {
+			return NextResponse.next()
+		}
+
+		// приватний маршрут — редірект на сторінку входу
+		if (isPrivateRoute) {
+			return NextResponse.redirect(new URL("/sign-in", request.url))
 		}
 	}
 
+	//console.log("*middleware*", refreshToken, isPublicRoute)
+
+	// Якщо accessToken існує:
+	// публічний маршрут — виконуємо редірект на головну
 	if (isPublicRoute) {
-		const res = NextResponse.redirect(new URL("/", request.url))
-		return withIpHeader(res)
+		return NextResponse.redirect(new URL("/", request.url))
 	}
-
+	// приватний маршрут — дозволяємо доступ
 	if (isPrivateRoute) {
-		const res = NextResponse.next()
-		return withIpHeader(res)
+		return NextResponse.next()
 	}
 
-	// fallback
-	return withIpHeader(NextResponse.next())
+	//fallback
+	return NextResponse.next()
 }
 
 export const config = {
@@ -79,5 +85,5 @@ const goHome = (cookieStore: ReadonlyRequestCookies, request: NextRequest) => {
 	cookieStore.delete("accessToken")
 	cookieStore.delete("refreshToken")
 	cookieStore.delete("sessionId")
-	return NextResponse.redirect(new URL("/", request.url))
+	return NextResponse.redirect(new URL("/sign-up", request.url))
 }
