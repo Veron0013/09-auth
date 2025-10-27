@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
 	const refreshToken = cookieStore.get("refreshToken")?.value
 	const sessionId = cookieStore.get("sessionId")?.value
 
-	const ip = cookieStore.get("x-forwarded-for") || cookieStore.get("x-real-ip") || "unknown"
+	const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
 
 	console.log("IP:", ip)
 
