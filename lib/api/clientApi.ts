@@ -59,10 +59,13 @@ export const createQueryParams = (search = "", page = 1, tag?: string): ApiQuery
 }
 
 export const fetchNotes = async (queryParams: ApiQueryParams): Promise<NotesData> => {
-	//const url: string = id === null ? MAIN_URL : `${MAIN_URL}/${id}`
-	//const response = await axios.get<NotesData>(MAIN_URL, queryParams)
-	const response = await nextServer.get<NotesData>("/notes", queryParams)
-	return response.data
+	const refreshSession = await checkSession()
+	if (refreshSession) {
+		const response = await nextServer.get<NotesData>("/notes", queryParams)
+		return response.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export const deleteNote = async (id: NoteId): Promise<Note> => {
@@ -97,8 +100,14 @@ export const updateNote = async (queryParams: NotePost, id: NoteId): Promise<Not
 
 export const fetchNoteById = async (id: NoteId): Promise<Note> => {
 	//const response = await axios.get<Note>(`${MAIN_URL}/${id}`)
-	const response = await nextServer.get<Note>(`/notes/${id}`)
-	return response.data
+	const refreshSession = await checkSession()
+
+	if (refreshSession) {
+		const response = await nextServer.get<Note>(`/notes/${id}`)
+		return response.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 ////////////////////////////////////////
@@ -123,8 +132,13 @@ export const checkSession = async () => {
 }
 
 export const getMe = async () => {
-	const { data } = await nextServer.get<User>("/users/me")
-	return data
+	const refreshSession = await checkSession()
+	if (refreshSession) {
+		const { data } = await nextServer.get<User>("/users/me")
+		return data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export type UpdateUserRequest = {
@@ -133,13 +147,19 @@ export type UpdateUserRequest = {
 }
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-	const formData = new FormData()
+	const refreshSession = await checkSession()
 
-	if (payload.username) formData.append("username", payload.username)
-	if (payload.avatar) formData.append("avatar", payload.avatar)
+	if (refreshSession) {
+		const formData = new FormData()
 
-	const res = await nextServer.patch<User>("/users/me", formData)
-	return res.data
+		if (payload.username) formData.append("username", payload.username)
+		if (payload.avatar) formData.append("avatar", payload.avatar)
+
+		const res = await nextServer.patch<User>("/users/me", formData)
+		return res.data
+	} else {
+		throw new Error(JSON.stringify({ message: "Session expired", code: 401 }))
+	}
 }
 
 export const uploadImage = async (file: File): Promise<string> => {
