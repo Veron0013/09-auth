@@ -46,8 +46,10 @@ const SignIn = () => {
 					<div className={css.formGroup}>
 						<label htmlFor="password">Password</label>
 						<input id="password" type="password" name="password" className={css.input} required />
+						<Link className={css.formLink} href={"/recovery"}>
+							Forgot password?
+						</Link>
 					</div>
-					<Link href={"/recovery"}>forgotten password</Link>
 
 					<div className={css.actions}>
 						<button type="submit" className={css.submitButton}>

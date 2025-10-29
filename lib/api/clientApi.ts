@@ -180,10 +180,10 @@ export const uploadImage = async (file: File): Promise<string> => {
 
 export const passwordSendMail = async (email: ResetPasswordSendmailRequest) => {
 	const res = await nextServer.post("/auth/request-reset-email", email)
-	return res.data
+	return res
 }
 
 export const resetPassword = async (body: RestorePasswordRequest) => {
 	const res = await nextServer.post("/auth/reset-password", body)
-	return { data: res.data, status: res.status }
+	return res
 }

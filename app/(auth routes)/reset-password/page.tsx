@@ -44,13 +44,13 @@ const ResetPassword = () => {
 		try {
 			const res = await resetPassword({ ...values, token: String(token) })
 
-			console.log(res, res?.status)
+			console.log(res.status)
 
 			if (!res.data.message || res?.status !== 200) {
 				toastMessage(MyToastType.error, `Password not changed. Server under maintanance`)
 				setError("Server under maintanance")
 			} else if (res.data) {
-				toastMessage(MyToastType.error, res.data.message)
+				toastMessage(MyToastType.success, res.data.message)
 				router.push("/sign-in")
 				formikHelpers.resetForm()
 			} else {
@@ -58,6 +58,7 @@ const ResetPassword = () => {
 			}
 		} catch (error) {
 			toastMessage(MyToastType.error, `Password not changed. Error found.${(error as ApiError).message}`)
+			//: ${(error as ApiError).response?.data?.response?.message}
 			setError((error as ApiError).response?.data?.error ?? (error as ApiError).message ?? "Oops... some error")
 		} finally {
 			setIsSending(false)

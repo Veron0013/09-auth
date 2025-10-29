@@ -36,13 +36,11 @@ const SendMail = () => {
 		try {
 			const res = await passwordSendMail(values)
 
-			console.log(res)
-
 			if (!res.data.message || res?.status !== 200) {
 				toastMessage(MyToastType.error, `E-mail not send. Server under maintanance`)
 				setError("Server under maintanance")
 			} else if (res) {
-				toastMessage(MyToastType.error, res.data.message)
+				toastMessage(MyToastType.success, res.data.message)
 				//router.push("/sign-in")
 				formikHelpers.resetForm()
 			} else {
@@ -57,6 +55,7 @@ const SendMail = () => {
 	}
 	return (
 		<div className={css.mainContent}>
+			<h1 className={css.formTitle}>Enter e-mail you registered</h1>
 			<Formik initialValues={initialValues} validationSchema={SendMailSchema} onSubmit={handleSubmit}>
 				<Form className={css.form}>
 					<div className={css.formGroup}>

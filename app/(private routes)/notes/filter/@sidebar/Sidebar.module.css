@@ -44,7 +44,7 @@
 
 .menuLink:hover {
 	background-color: #444;
-	color: #ddd;
+	color: var(--main-button-color);
 }
 
 .filterLayout {

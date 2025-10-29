@@ -54,7 +54,7 @@ const AvatarPicker = ({ profilePhotoUrl, onChangePhoto }: Props) => {
 	return (
 		<div>
 			<div className={css.picker}>
-				{previewUrl && <Image src={previewUrl} alt="Preview" width={300} height={300} className={css.avatar} />}
+				{previewUrl && <Image src={previewUrl} alt="Preview" width={200} height={200} className={css.avatar} />}
 				<label className={previewUrl ? `${css.wrapper} ${css.reload}` : css.wrapper}>
 					📷 Choose photo
 					<input type="file" accept="image/*" onChange={handleFileChange} className={css.input} />
