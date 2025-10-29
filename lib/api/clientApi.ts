@@ -10,6 +10,15 @@ export type LoginRequest = {
 	password: string
 }
 
+export type ResetPasswordSendmailRequest = {
+	email: string
+}
+
+export type RestorePasswordRequest = {
+	token: string
+	password: string
+}
+
 export type RegisterRequest = {
 	email: string
 	password: string
@@ -167,4 +176,14 @@ export const uploadImage = async (file: File): Promise<string> => {
 	formData.append("file", file)
 	const { data } = await nextServer.post("/upload", formData)
 	return data.url
+}
+
+export const passwordSendMail = async (email: ResetPasswordSendmailRequest) => {
+	const res = await nextServer.post("/auth/request-reset-email", email)
+	return res.data
+}
+
+export const resetPassword = async (body: RestorePasswordRequest) => {
+	const res = await nextServer.post("/auth/reset-password", body)
+	return { data: res.data, status: res.status }
 }

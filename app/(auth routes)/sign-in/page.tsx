@@ -7,6 +7,7 @@ import { login, LoginRequest } from "@/lib/api/clientApi"
 import { ApiError } from "@/app/api/api"
 import css from "./SignInPage.module.css"
 import { useAuthStore } from "@/lib/store/authStore"
+import Link from "next/link"
 
 const SignIn = () => {
 	const router = useRouter()
@@ -46,6 +47,7 @@ const SignIn = () => {
 						<label htmlFor="password">Password</label>
 						<input id="password" type="password" name="password" className={css.input} required />
 					</div>
+					<Link href={"/recovery"}>forgotten password</Link>
 
 					<div className={css.actions}>
 						<button type="submit" className={css.submitButton}>

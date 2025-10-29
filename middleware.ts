@@ -17,16 +17,21 @@ export async function middleware(request: NextRequest) {
 
 	const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
 
-	console.log("IP:", ip)
-
 	const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route))
 	const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route))
 
+	console.log("IP:", ip, isPublicRoute, isPrivateRoute, accessToken)
+
 	if (!accessToken) {
 		if (refreshToken && sessionId) {
-			const data = await checkServerSession()
+			let data = null
+			try {
+				data = await checkServerSession()
+			} catch (error) {
+				return NextResponse.redirect(new URL("/", request.url))
+			}
 
-			//console.log("==middleware==", data)
+			console.log("==middleware==", data)
 
 			if (!data.data.success) {
 				console.log("go home data")
