@@ -54,31 +54,33 @@ const SendMail = () => {
 		}
 	}
 	return (
-		<div className={css.mainContent}>
-			<h1 className={css.formTitle}>Enter e-mail you registered</h1>
-			<Formik initialValues={initialValues} validationSchema={SendMailSchema} onSubmit={handleSubmit}>
-				<Form className={css.form}>
-					<div className={css.formGroup}>
-						<label htmlFor="email">Your e-mail</label>
-						<Field
-							id={`${fieldId}-email`}
-							type="text"
-							name="email"
-							placeholder="Enter email. Required"
-							className={css.input}
-						/>
-						<ErrorMessage name="email" component="span" className={css.error} />
-					</div>
+		<>
+			<main className={css.mainContent}>
+				{/*<h1 className={css.formTitle}>Enter e-mail you registered</h1>*/}
+				<Formik initialValues={initialValues} validationSchema={SendMailSchema} onSubmit={handleSubmit}>
+					<Form className={css.form}>
+						<div className={css.formGroup}>
+							<label htmlFor="email">Enter e-mail you registered</label>
+							<Field
+								id={`${fieldId}-email`}
+								type="text"
+								name="email"
+								placeholder="Enter email. Required"
+								className={css.input}
+							/>
+							<ErrorMessage name="email" component="span" className={css.error} />
+						</div>
 
-					<div className={css.actions}>
-						<button type="submit" className={css.submitButton} disabled={isSending}>
-							{isSending ? `Sending e-mail...` : "Send"}
-						</button>
-					</div>
-				</Form>
-			</Formik>
-			{error && <p className={css.error}>{error}</p>}
-		</div>
+						<div className={css.actions}>
+							<button type="submit" className={css.submitButton} disabled={isSending}>
+								{isSending ? `Sending e-mail...` : "Send"}
+							</button>
+						</div>
+					</Form>
+				</Formik>
+				{error && <p className={css.error}>{error}</p>}
+			</main>
+		</>
 	)
 }
 

@@ -4,6 +4,10 @@
 	flex: 1;
 }
 
+.mainContent h1 {
+	width: 300px;
+}
+
 .form {
 	display: flex;
 	flex-direction: column;

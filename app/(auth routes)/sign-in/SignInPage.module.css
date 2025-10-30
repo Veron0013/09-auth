@@ -16,6 +16,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.formLink {
+  margin-top: 8px;
+  color: rgb(2, 2, 124);
+  text-decoration: underline;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
